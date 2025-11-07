@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E.T.I.V SAS - Telecomunicaciones e Innovaciones del Vaupés</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #006400;
+            --secondary-color: #FF9900;
+            --accent-color: #003366;
+        }
+
+        html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 10px;
+}
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+
+        .navbar img:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color) !important;
+        }
+         /* --- NAVBAR SIN ESPACIOS Y LOGO AJUSTADO --- */
+        navbar {
+        padding: 0 !important;
+        margin: 0 !important;
+        align-items: center;
+        }
+
+.navbar-brand {
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand img.logo {
+  height: 80px;        
+  width: auto;          
+  margin: 0;
+  padding: 0;
+  object-fit: contain;
+  display: block;
+}
+
+        
+        .btn-primary {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: #fff !important;
+        }
+        .btn-primary:hover {
+            background-color: #218838 !important;
+            border-color: #1e7e34 !important;
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi9fQ_X7UxNkjyu-Z_hlUeJqgSVdAXUuARqGLJ5PF3agd42W5DY3rtSTG81gSiNuemAQY7ksu2jTMsj1IIWYnz8O3INhyphenhypheniJlszRDRTxckdZSGnZDGoTyCT-iNSQstvVeDW_WWyhWrtZHVeyyna-cDKPL14JkiRbwAicmEf_wjhhEjqSVUT4dU-wfFZ5MMWi/s1248/vaupes.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 120px 20px;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+        opacity: 0;
+        transform: translateY(-30px);
+        animation: fadeSlideDown 1.5s ease forwards;
+        }
+
+        .hero-section p {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeSlideUp 1.5s ease forwards;
+        animation-delay: 0.5s;
+        }
+
+        .hero-section .btn {
+        opacity: 0;
+        transform: scale(0.9);
+        animation: fadeZoomIn 1.5s ease forwards;
+        animation-delay: 1s;
+        }
+
+        .section-title {
+            position: relative;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+        
+        .service-card {
+            transition: transform 0.3s;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            height: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-card {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 250px; /* puedes ajustar a 200px o 300px según tu diseño */
+            object-fit: cover; /* recorta y centra la imagen sin deformarla */
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .gallery-img:hover {
+            transform: scale(1.03);
+        }
+
+/* Hover en las tarjetas de planes */
+/* Estilos para las tarjetas de planes */
+.card {
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+.card h3 {
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+}
+.card p {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+}
+.card .btn {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    transition: all 0.3s ease-in-out;
+}
+.card .btn:hover {
+    background-color: #004d00; /* verde más fuerte */
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(0, 100, 0, 0.6);
+}
+
+/* ---- TARJETA DESTACADA (POPULAR) ---- */
+.popular-card {
+    border: 2px solid var(--secondary-color);
+    box-shadow: 0 0 20px rgba(255, 153, 0, 0.4);
+    position: relative;
+    width: 100%;       /* mantiene el ancho de su columna */
+    max-width: 100%;
+    margin: 0 auto;
+}
+.popular-card .card-header {
+    border: 2px solid var(--secondary-color);
+    border-radius: 8px;
+    padding: 10px;
+    display: inline-block;
+    animation: blinkBox 2s infinite;
+}
+.popular-card .card-header h3 {
+    margin-bottom: 5px;
+    animation: blinkText 1.5s infinite;
+}
+.popular-card .badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    background-color: var(--secondary-color);
+    color: #fff;
+    animation: blinkBadge 1.5s infinite;
+}
+.popular-card .btn {
+    background-color: var(--secondary-color);
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+.popular-card .btn:hover {
+    background-color: #e68a00;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(255,153,0,0.6);
+}
+
+/* ---- Animaciones ---- */
+@keyframes blinkText {
+    0%,100% { color: var(--secondary-color); }
+    50%     { color: #ffd700; }
+}
+
+/* Animación del cuadro */
+        @keyframes blinkBox {
+        0%, 100% {
+        box-shadow: 0 0 10px #007bff;
+        border-color: #007bff;
+        background-color: #ffffff;
+        }
+        50% {
+        box-shadow: 0 0 20px #ffd700;
+        border-color: #ffd700;
+        background-color: #fff8dc; /* Amarillo suave */
+        }
+        }
+
+/* Parpadeo "Más Popular" */
+        @keyframes blinkBadge {
+        0%, 100% { background-color: #007bff; color: #fff; }
+        50% { background-color: #ffd700; color: #000; }
+        }
+
+        footer {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .social-icon {
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+        
+        .social-icon:hover {
+            color: var(--secondary-color);
+        }
+        
+        /* How it Works Section Styles */
+        .how-it-works {
+            padding: 80px 0;
+        }
+        
+        .step-container {
+            position: relative;
+            text-align: center;
+        }
+        
+        .step-number {
+            background: linear-gradient(45deg, var(--primary-color), #059669);
+            color: white;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            box-shadow: 0 10px 30px rgba(0, 100, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .step-number:hover {
+            transform: scale(1.1);
+        }
+        
+        .step-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .step-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .step-1 .step-number,
+        .step-2 .step-number,
+        .step-3 .step-number,
+        .step-4 .step-number {
+            background: linear-gradient(135deg, #00b050, #2ecc71);
+        }
+
+
+        .step-1 .step-icon,
+        .step-2 .step-icon,
+        .step-3 .step-icon,
+        .step-4 .step-icon {
+            color: #004d00;
+}
+        
+        .cta-button-process {
+            background: linear-gradient(45deg,  #004d00);
+            color: white;
+            padding: 18px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+            transition: transform 0.3s ease;
+        }
+        
+        .cta-button-process:hover {
+            transform: translateY(-3px);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Estilos para la sección de test de velocidad */
+
+       /* Wrapper del test */
+.speed-test-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 50%; /* relación aspecto */
+    margin-bottom: 20px;
+}
+
+/* Iframe del test */
+.speed-test-iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+}
+
+/* Bloque negro que tapa el logo */
+.logo-overlay {
+    position: absolute;
+    top: 0%;       /* posición vertical */
+    left: 0%;      /* posición horizontal */
+    width: 25%;    /* ancho relativo */
+    height: 10%;   /* alto relativo */
+    display: flex;
+    
+    
+}
+
+/* Imagen del logo */
+.overlay-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+    .logo-overlay {
+        top: 5%;
+        left: 5%;
+        width: 40%;
+        height: 15%;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-overlay {
+        top: 6%;
+        left: 6%;
+        width: 50%;
+        height: 18%;
+    }
+} /* Wrapper del test */
+
+
+
+/* Bloque negro que tapa el logo */
+.logo-overlay {
+    position: absolute;
+    top: 0%;     
+    left: 15px;    
+    width: 278px;  
+    height: 60px;  /*  Ajusta este valor a lo que necesites */
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+/* Imagen del logo personalizado */
+.overlay-img {
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+    .logo-overlay {
+        top: 5%;      /* más abajo para alinear con el logo en móvil */
+        left: 1%;
+        width: 40%;   /* más ancho porque el logo ocupa más espacio en móvil */
+        height: 15%;  
+    }
+}
+
+/* Ajustes para móviles muy pequeños */
+@media (max-width: 480px) {
+    .logo-overlay {
+        top: 6%;
+        left: 1%;
+        width: 50%;   /* todavía más ancho */
+        height: 18%;
+    }
+}
+
+
+        .speed-test-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 80px 0;
+        }
+
+        .speed-test-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .speed-test-iframe {
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            min-height: 360px;
+            border-radius: 15px;
+            overflow: hidden !important;
+        }
+
+        .speed-test-wrapper {
+            width: 100%;
+            height: 0;
+            padding-bottom: 50%;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .speed-test-info {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .speed-test-info p {
+            color: #666;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .speed-test-provider {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .speed-test-provider:hover {
+            color: var(--secondary-color);
+        }
+
+        @keyframes fadeSlideDown {
+            to {
+            opacity: 1;
+            transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeSlideUp {
+            to {
+        opacity: 1;
+        transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeZoomIn {
+            to {
+        opacity: 1;
+        transform: scale(1);
+            }
+        }
+        
+        /* Connector lines for desktop */
+        @media (min-width: 992px) {
+            .step-container::after {
+                content: '';
+                position: absolute;
+                top: 50px;
+                right: -50px;
+                width: 100px;
+                height: 4px;
+                background: linear-gradient(45deg, var(--primary-color), #059669);
+                z-index: 1;
+            }
+            
+            .step-container:last-child::after {
+                display: none;
+            }
+        }
+
+        /* Sección de contacto estilo Amazonas */
+
+        #contact .row {
+            display: flex;
+            justify-content: center;
+        }
+
+        #contact form {
+            max-width: 500px; /* ancho máximo */
+            width: 100%;
+        }
+
+
+        #contact {
+            border-radius: 20px;
+            padding: 60px 20px;
+        }
+
+        #contact .section-title {
+            text-align: center;
+            color: #2E7D32; 
+            font-weight: 700;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        #contact .section-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #66bb6a;
+            margin: 10px auto 0;
+            border-radius: 4px;
+        }
+
+        #contact .form-control {
+            border: 2px solid #a5d6a7;
+            border-radius: 12px;
+            padding: 12px;
+            background-color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        #contact .form-control:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76,175,80,0.4);
+        }
+
+        #contact label {
+            font-weight: 600;
+            color: #1b5e20;
+            margin-bottom: 5px;
+        }
+
+        #contact textarea {
+            resize: none;
+        }
+
+        #contact button.btn-primary {
+            background-color: #4CAF50;   /* Verde selva */
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 14px 20px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        #contact button.btn-primary:hover {
+            background-color: #388E3C;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        #testimonios {
+    background: white;
+    padding: 60px 0;
+}
+
+.testimonial-card {
+    background: #fff;
+    border-radius: 16px;
+    border-top: 4px solid #2e7d32; /* verde amazónico */
+    padding: 25px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.testimonial-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.testimonial-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #43a047, #2e7d32);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0 auto 15px;
+}
+
+/* Botón flotante */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25D366;  /* verde WhatsApp */
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 30px;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    animation: pulse 1.5s infinite, blink 3s infinite;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Animación al pasar el mouse */
+.whatsapp-float:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 20px rgba(37, 211, 102, 0.7);
+}
+
+footer .row {
+    flex-wrap: wrap;
+}
+
+@media (min-width: 992px) {
+    footer .row {
+        flex-wrap: nowrap;
+    }
+}
+
+
+
+/* Pulso suave */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* Parpadeo ligero */
+@keyframes blink {
+    0%, 100% { box-shadow: 0 0 10px rgba(37, 211, 102, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(37, 211, 102, 0.7); }
+}
+
+
+
+
+        
+        /* Media Queries para Responsividad */
+        @media (max-width: 768px) {
+            .hero-section {
+            padding: 80px 0;
+            }
+
+            .logo {
+            height: 45px; /* tablets */
+            }
+            
+            .hero-section h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-section p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .service-icon {
+                font-size: 2.5rem;
+            }
+            
+            .testimonial-card {
+                padding: 15px;
+            }
+            
+            .card {
+                margin-bottom: 20px;
+            }
+            
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+            
+            .navbar-nav {
+                text-align: center;
+            }
+            
+            .step-number {
+                width: 80px;
+                height: 80px;
+                font-size: 36px;
+            }
+            
+            .step-icon {
+                font-size: 40px;
+            }
+            
+            .how-it-works {
+                padding: 60px 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-section {
+                padding: 60px 0;
+            }
+
+            .logo {
+            height: 35px; /* celulares */
+            }
+            
+            .hero-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn-lg {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .service-icon {
+                font-size: 2rem;
+            }
+            
+            .display-4 {
+                font-size: 2rem;
+            }
+            
+            footer {
+                padding: 40px 0 20px;
+                text-align: center;
+            }
+            
+            footer .row > div {
+                margin-bottom: 30px;
+            }
+            
+            .contact-info .d-flex {
+                margin-bottom: 15px;
+            }
+            
+            .cta-button-process {
+                padding: 15px 30px;
+                font-size: 18px;
+            }
+        }
+        
+        /* Ajustes específicos para elementos de Bootstrap */
+        @media (max-width: 992px) {
+            .navbar-collapse {
+                background-color: var(--primary-color);
+                padding: 15px;
+                border-radius: 5px;
+                margin-top: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjXOUbSJw96NYAE6V_waVEjzwXxQOBcLgYkWau38ezMucFkfY4gsnaKSVXWz4Wf0xyDfeRPZYhSxSe6li3mbUsAGurZLY3_WtgjCMi5TGBHlZ1hRbzAG9N1oZIR1601npBzdiubK6BLVHRmEaMc_aDRez5C3DKvXlzEO5j_CAJq8-T37uCY0XvrCUhycY5I/s1067/logod.png" 
+           alt="E.T.I.V SAS" class="logo">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
+        <li class="nav-item"><a class="nav-link" href="#plans">Planes</a></li>
+        <li class="nav-item"><a class="nav-link" href="#how-it-works">¿Cómo funciona?</a></li>
+        <li class="nav-item"><a class="nav-link" href="#speed-test">Test de velocidad</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="#coverage">Cobertura</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">E.T.I.V SAS - Telecomunicaciones del Vaupés</h1>
+            <p class="lead mb-4">Conectamos tu hogar o negocio con el mundo. Servicios confiables y accesibles para toda la comunidad de Vaupés.</p>
+            <div class="d-grid gap-2 d-md-block">
+                <a href="#plans" class="btn btn-primary btn-lg me-md-2 mb-2">Ver Planes</a>
+                <a href="#contact" class="btn btn-outline-light btn-lg mb-2">Contáctanos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card service-card text-center p-4">
+                        <div class="service-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h3>Internet Residencial</h3>
+                        <p>Conexión estable y rápida para tu hogar. Ideal para navegación, redes sociales, streaming y teletrabajo.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card service-card text-center p-4">
+                        <div class="service-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3>Internet Empresarial</h3>
+                        <p>Soluciones dedicadas para empresas con mayor ancho de banda, IP estática y soporte prioritario.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card service-card text-center p-4">
+                        <div class="service-icon">
+                            <i class="fas fa-tower-cell"></i>
+                        </div>
+                        <h3>Internet Rural</h3>
+                        <p>Llevamos conexión a zonas alejadas con tecnología especializada para superar barreras geográficas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section id="plans" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Nuestros Planes</h2>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card text-center p-4 h-100">
+                        <div class="card-header bg-white border-0">
+                            <h3>Plan Básico</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">$35.000/mes</h4>
+                            <p class="text-muted">Ideal para uso personal</p>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">10 Mbps de velocidad</li>
+                                <li class="mb-2">Conexión ilimitada</li>
+                                <li class="mb-2">Soporte técnico 24/7</li>
+                                <li class="mb-2">Instalación gratuita</li>
+                            </ul>
+                            <button class="btn btn-primary contratar-btn" data-plan="Plan Básico">Contratar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card text-center p-4 h-100 popular-card">
+                        <div class="card-header bg-white border-0">
+                            <h3>Plan Familiar</h3>
+                            <span class="badge bg-light text-primary">Más Popular</span>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">$50.000/mes</h4>
+                            <p class="text-muted">Perfecto para toda la familia</p>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">20 Mbps de velocidad</li>
+                                <li class="mb-2">Conexión ilimitada</li>
+                                <li class="mb-2">WiFi incluido</li>
+                                <li class="mb-2">Soporte técnico 24/7</li>
+                                <li class="mb-2">Instalación gratuita</li>
+                            </ul>
+                            <button class="btn btn-primary contratar-btn" data-plan="Plan Familiar">Contratar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 mb-4">
+                    <div class="card text-center p-4 h-100">
+                        <div class="card-header bg-white border-0">
+                            <h3>Plan Empresarial</h3>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">$80.000/mes</h4>
+                            <p class="text-muted">Para negocios y empresas</p>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">50 Mbps de velocidad</li>
+                                <li class="mb-2">Conexión ilimitada</li>
+                                <li class="mb-2">IP estática incluida</li>
+                                <li class="mb-2">Soporte prioritario 24/7</li>
+                                <li class="mb-2">Instalación gratuita</li>
+                            </ul>
+                            <button class="btn btn-primary contratar-btn" data-plan="Plan Empresarial">Contratar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seccion ¿Como funciona? -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title" style="color: #1f2937; margin-bottom: 20px;">¿Cómo funciona?</h2>
+            <p style="text-align: center; color:black; font-size: 20px; margin-bottom: 60px;">
+                Es muy fácil tener internet en tu hogar o negocio
+            </p>
+            
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="step-container step-1">
+                        <div class="step-number">1</div>
+                        <div class="step-card">
+                            <i class="fas fa-phone step-icon"></i>
+                            <h3 style="color: #1f2937; margin-bottom: 15px; font-size: 24px;">Nos llamas</h3>
+                            <p style="color: #6b7280; font-size: 16px;">Contacta por WhatsApp, teléfono o llena el formulario. Te responderemos inmediatamente.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="step-container step-2">
+                        <div class="step-number">2</div>
+                        <div class="step-card">
+                            <i class="fas fa-helmet-safety step-icon"></i>
+                            <h3 style="color: #1f2937; margin-bottom: 15px; font-size: 24px;">Visitamos tu lugar</h3>
+                            <p style="color: #6b7280; font-size: 16px;">Nuestro técnico va a tu casa o negocio para evaluar qué necesitas y planificar la instalación.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="step-container step-3">
+                        <div class="step-number">3</div>
+                        <div class="step-card">
+                            <i class="fas fa-tools step-icon"></i>
+                            <h3 style="color: #1f2937; margin-bottom: 15px; font-size: 24px;">Instalamos todo</h3>
+                            <p style="color: #6b7280; font-size: 16px;">Hacemos toda la instalación profesional. Te explicamos cómo usar el internet y el WiFi.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="step-container step-4">
+                        <div class="step-number">4</div>
+                        <div class="step-card">
+                            <i class="fas fa-wifi step-icon"></i>
+                            <h3 style="color: #1f2937; margin-bottom: 15px; font-size: 24px;">¡Ya tienes internet!</h3>
+                            <p style="color: #6b7280; font-size: 16px;">Disfruta de internet rápido y confiable. Si tienes problemas, te ayudamos las 24 horas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center" style="margin-top: 50px;">
+                <a href="#contact" class="cta-button-process">
+                    <i class="fas fa-rocket"></i>
+                    ¡Quiero empezar ya!
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!--test de velocidad-->
+<section id="speed-test" class="speed-test-section">
+    <div class="container">
+        <h2 class="section-title">Test de Velocidad</h2>
+        <p class="text-center mb-5" style="font-size: 18px; color: black;">
+            Prueba la velocidad de tu conexión actual y compárala con nuestros planes
+        </p>
+
+        <!-- Wrapper con posición relativa -->
+        <div class="speed-test-wrapper">
+            <!-- Iframe del test -->
+            <iframe class="speed-test-iframe" 
+                    src="https://www.metercustom.net/plugin/?hl=es" 
+                    title="Test de Velocidad de Internet"
+                    frameborder="0"
+                    allowfullscreen>
+            </iframe>
+
+            <!-- Bloque negro con logo encima -->
+            <div class="logo-overlay">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjXOUbSJw96NYAE6V_waVEjzwXxQOBcLgYkWau38ezMucFkfY4gsnaKSVXWz4Wf0xyDfeRPZYhSxSe6li3mbUsAGurZLY3_WtgjCMi5TGBHlZ1hRbzAG9N1oZIR1601npBzdiubK6BLVHRmEaMc_aDRez5C3DKvXlzEO5j_CAJq8-T37uCY0XvrCUhycY5I/s1067/logod.png" 
+                     alt="Mi Logo" class="overlay-img">
+            </div>
+        </div>
+    </div>
+</section>
+        
+        <!-- Info extra -->
+        <div class="speed-test-info">
+            
+            <p class="mb-3">¿No estás satisfecho con tu velocidad actual?</p>
+            <a href="#plans" class="btn btn-primary btn-lg me-3">Ver Nuestros Planes</a>
+            <a href="#contact" class="btn btn-outline-primary btn-lg">Contactar Ahora</a>
+            
+            <div class="mt-4">
+                <small class="speed-test-provider">
+                    Proveedor del test: <a href="https://www.testvelocidad.es" target="_blank" rel="noopener">Test de Velocidad E.T.IV SAS</a>
+                </small>
+            </div>
+        </div>
+        
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Sobre E.T.I.V SAS</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-12 mb-4">
+                    <h3>Conectando Vaupés desde 2018</h3>
+                    <p>E.T.I.V SAS (Empresa de Telecomunicaciones e Innovaciones del Vaupés) nace con el propósito de conectar a las comunidades del departamento de Vaupés con el mundo digital. Somos una empresa local comprometida con el desarrollo tecnológico de nuestra región.</p>
+                    <p>Nuestra misión es brindar acceso a internet de calidad a todos los habitantes de Vaupés, superando las barreras geográficas con tecnología innovadora y personal capacitado localmente.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Infraestructura propia en Vaupés</li>
+                        <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Tecnología adaptada a la región</li>
+                        <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Atención personalizada</li>
+                        <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Comprometidos con el desarrollo local</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjXOUbSJw96NYAE6V_waVEjzwXxQOBcLgYkWau38ezMucFkfY4gsnaKSVXWz4Wf0xyDfeRPZYhSxSe6li3mbUsAGurZLY3_WtgjCMi5TGBHlZ1hRbzAG9N1oZIR1601npBzdiubK6BLVHRmEaMc_aDRez5C3DKvXlzEO5j_CAJq8-T37uCY0XvrCUhycY5I/s1067/logod.png" alt="Nuestro equipo" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+<!-- Coverage Section -->
+<section id="coverage" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-title">Cobertura en Vaupés</h2>
+        <div class="row">
+            <!-- Texto -->
+            <div class="col-lg-6 col-md-12 mb-4">
+                <h3>Llevamos nuestro servicio a todo el departamento</h3>
+                <p>Nuestra red cubre progresivamente los diferentes municipios y corregimientos de Vaupés, con especial enfoque en Mitú y las comunidades aledañas.</p>
+                <div class="mt-4">
+                    <h4>Zonas con cobertura actual:</h4>
+                    <ul>
+                        <li>Mitú (área urbana y rural)</li>
+                        <li>Comunidades indígenas cercanas</li>
+                        <li>Carurú</li>
+                        <li>Pacoa</li>
+                        <li>Taraira</li>
+                    </ul>
+                </div>
+                <p class="mt-3">¿No encuentras tu comunidad en la lista? <a href="#contact">Contáctanos</a> para evaluar la expansión de nuestra red.</p>
+            </div>
+
+            <!-- Mapa interactivo con Leaflet -->
+            <div class="col-lg-6 col-md-12">
+                <div id="map" style="width:100%; height:400px;" class="rounded"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Nuestra Presencia en Vaupés</h2>
+            <p class="text-center mb-5">Conectando las comunidades de nuestro departamento con el mundo digital</p>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcjASx93ne2Yt_8Idnugij0iNQdzCgRExt_L5kaIFc2qeIatRZvFGAxti-O3UOqUMujzl3Ur-Z_R4grYLiRnIiEjr3P5W8eEbJKeeZrxHesqdGBKkD68vkbMdPl39sm5_PEdo09DJ7IwYfDhnEw1WUb2AABIFzKFnf53QRbkWkFL1Paam39V9AwjQHrrF0/s2048/vaupeslogo.png" alt="Mitú" class="img-fluid gallery-img">
+                    <h4 class="mt-2">Mitú</h4>
+                    <p>Nuestra sede principal, desde donde coordinamos la operación en todo el departamento.</p>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgxeO6Uj5xIy05hQRoztAJsiOlat7D7dCwurNYASkfFy5Ria_qN5VdZ1KaBBZBxNvupKTAEVS93ifDQWN-uYqzT9Kt0gjwBYmeGb4rUMkRp9BaegTxbhjJSU4TiWr_asvPNi8FPryJhEqUdWjvCxeY6ybdwQctrhPExfkMjFIKH0zkrE8NCr1XMhWGAgHmY/s600/comunidad.jpg" alt="Comunidad Indígena" class="img-fluid gallery-img">
+                    <h4 class="mt-2">Comunidades Indígenas</h4>
+                    <p>Trabajamos para llevar conectividad a las comunidades indígenas del Vaupés.</p>
+                </div>
+                <div class="col-lg-4 col-md-12 mb-4">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg9gmNEY-lwIcLibwLYOQFAdvDuAe62LcZ_KZ9J64G-kwrYIjtDS9ufCDdF9gRif3ccZ5gH-3GhEM_4gQlW3R8jOeagocDoLkr1lL07NHkGGMG9e2jsrCQoPyEf44jdxwz9Gqf6t6aLjY9laibL-u8iatyakgl4Am_7EP5wwaueurYmEIrnuy0GQGhWmFhJ/s1171/infra1.jpg" alt="Infraestructura" class="img-fluid gallery-img">
+                    <h4 class="mt-2">Nuestra Infraestructura</h4>
+                    <p>Torres y equipos de comunicación adaptados a las condiciones de la región.</p>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="#contact" class="btn btn-primary">Solicitar servicio en mi zona</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="testimonial-card text-center">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgrzFnNe-HEJsax5EVykSa7Ycvwm7Y2D3kgYaCSm_Va6UjpOyftghpfBG8uNffqW1H-K4PBdna5yU2ZlFoVIFEO2ZObjxsSlPHsIhkfCrWvDxSSL57Ox-L9vLDQK_FCoOqqIDhY48jmZ2MKTkYU9RnKY2Ro_Rq0jNQJFksI64O-CyagDY6oWeql6Nk8Ecx_/s1536/ChatGPT%20Image%207%20oct%202025,%2004_24_22%20p.m..png" alt="Cliente" class="testimonial-img">
+                        <h4>Juan Pérez</h4>
+                        <p class="text-muted">Mitú</p>
+                        <p>"Desde que contraté el servicio de E.T.I.V SAS, puedo trabajar desde casa sin problemas. La conexión es estable y el soporte técnico responde rápido."</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="testimonial-card text-center">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpsHcAFkTGQNDYncyQK6Vlu0Z7TjsFNyxf3YYJEPecJW624_I7zvlCk-Hu4BdUc1lMZdPTKCz2gP5iV0NrAQzAI-Ckw9rjUlwpZKnbjMBGoFdR6eTz1pyBfoik2aOnPLVRiiuozoe_eauHA5v7NeS-3l22d8x2qWy-eKtZ9g7XliKyVr3iOqtmAs8Lg_N_/s1058/ChatGPT%20Image%207%20oct%202025,%2004_28s_54%20p.m..png" alt="Cliente" class="testimonial-img">
+                        <h4>María Gómez</h4>
+                        <p class="text-muted">Comunidad indígena</p>
+                        <p>"Ahora mis hijos pueden estudiar en línea y nosotros estamos conectados con familiares en otras partes del país. Gracias por llegar a nuestra comunidad."</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 mb-4">
+                    <div class="testimonial-card text-center">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhqDpEvimFldLipVdnjOZckwdiZxImHUUhECoQgSFgwhh6HekE9Imamtg0kmQHoBcWNH8YoBhjtJhhYknqRkyGloaQnBpmiSrWhGeus39rZc9d3YMXFJvaVEYTysnpYNUt2LwxyImOn0wJRy7w3276ry7nojXVnq3b7BeSZ4YNKQoLoRfpJVIigxPJGnrf6/s1536/ChatGPT%20Image%207%20oct%202025,%2004_41_45%20p.m..png" alt="Cliente" class="testimonial-img">
+                        <h4>Carlos Rodríguez</h4>
+                        <p class="text-muted">Comerciante en Mitú</p>
+                        <p>"El internet empresarial me permite gestionar mi negocio eficientemente. Ahora puedo aceptar pagos digitales y comunicarme con proveedores sin interrupciones."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5">
+    <div class="container">
+    <h2 class="section-title">Contáctanos</h2>
+    <div class="row">
+    <div class="col-lg-6 col-md-12 mb-4">
+        <form id="whatsappForm">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre completo</label>
+            <input type="text" class="form-control" id="name" name="nombre" required>
+        </div>
+        <div class="mb-3">
+            <label for="plan" class="form-label">Plan seleccionado</label>
+            <select class="form-control" id="plan" name="plan" required>
+            <option value="">Seleccione un plan</option>
+            <option value="Plan Básico">Plan Básico</option>
+            <option value="Plan Familiar">Plan Familiar</option>
+            <option value="Plan Empresarial">Plan Empresarial</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="phone" name="telefono" oninput="this.value = this.value.replace(/[^0-9]/g, '') " placeholder="Numero de celular">
+        </div>
+
+        <div class="mb-3">
+            <label for="message" class="form-label">Mensaje</label>
+            <textarea class="form-control" id="message" name="mensaje" rows="1" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Enviar por WhatsApp</button>
+        </form>
+    </div>
+    </div>
+</div>
+</section>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <h4>E.T.I.V SAS</h4>
+                    <p>Empresa de Telecomunicaciones e Innovaciones del Vaupés</p>
+                    <p>Conectando a Vaupés con el mundo digital</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h4>Enlaces rápidos</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#services" class="text-white">Servicios</a></li>
+                        <li><a href="#plans" class="text-white">Planes</a></li>
+                        <li><a href="#how-it-works" class="text-white">¿Cómo funciona?</a></li>
+                        <li><a href="#speed-test" class="text-white">Test de velocidad</a></li>
+                        <li><a href="#about" class="text-white">Nosotros</a></li>
+                        <li><a href="#coverage" class="text-white">Cobertura</a></li>
+                        <li><a href="#contact" class="text-white">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h4>Síguenos</h4>
+                    <a href="https://www.facebook.com/eticsas/?locale=es_LA" class="social-icon" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="https://wa.me/573142933385" class="social-icon" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            <div class="col-md-3 mb-4">
+                <h4>Información de contacto</h4>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-map-marker-alt me-2"></i>Calle 12 # 5-78, Mitú, Vaupés</li>
+                    <li><i class="fas fa-phone me-2"></i>+57 (8) 564 1234</li>
+                    <li><i class="fas fa-envelope me-2"></i>
+                        <a href="mailto:suditelsas@gmail.com" class="text-white">suditelsas@gmail.com</a>
+                    </li>
+                    <li><i class="fas fa-clock me-2"></i>Lun–Vie: 8am–6pm<br> Sáb: 9am–2pm</li>
+                </ul>
+            </div>
+            </div>
+            <hr class="bg-light">
+            <div class="text-center pt-3">
+                <p>&copy; 2024 E.T.I.V SAS - Todos los derechos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- script de whatsapp -->
+    <script>
+    document.getElementById("whatsappForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let nombre   = document.getElementById("name").value;
+    let plan     = document.getElementById("plan").value;
+    let email    = document.getElementById("email").value;
+    let telefono = document.getElementById("phone").value;
+    let mensaje  = document.getElementById("message").value;
+
+    let texto = `*Nuevo mensaje desde el formulario*%0A
+    *Nombre:* ${nombre}%0A
+    *Plan:* ${plan}%0A
+    *Correo:* ${email}%0A
+    *Teléfono:* ${telefono}%0A
+    *Mensaje:* ${mensaje}`;
+
+    let numeroEmpresa = "573142933385"; // WhatsApp Suditelsas 
+    let url = `https://wa.me/${numeroEmpresa}?text=${texto}`;
+
+    window.open(url, '_blank');
+    });
+</script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Smooth scroll script -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- Redirigir el boton de contrar plan al formulario -->
+<script>
+document.querySelectorAll('.contratar-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const plan = this.getAttribute('data-plan');
+        const selectPlan = document.getElementById('plan');
+
+        selectPlan.value = plan;
+
+        document.getElementById('contact').scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+<script> //cerrar menu hamburguesa al hacer click en un enlace
+document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        const target = this.getAttribute('href');
+        if (target.startsWith('#')) {
+            e.preventDefault(); // Evita el salto brusco
+
+            // Cierra el menú hamburguesa si está abierto
+            const navbar = document.querySelector('.navbar-collapse');
+            if (navbar.classList.contains('show')) {
+                new bootstrap.Collapse(navbar).toggle();
+            }
+
+            // Hace el scroll manual con offset para el navbar fijo
+            const element = document.querySelector(target);
+            if (element) {
+                const headerOffset = document.querySelector('.navbar').offsetHeight;
+                const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+                const offsetPosition = elementPosition - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    });
+});
+</script>
+
+<script>
+    // Crear mapa
+    const map = L.map('map');
+
+    // Tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Marcadores de municipios
+    const locations = [
+        {name:"Mitú", coords:[1.2529,-70.2333]},
+        {name:"Carurú", coords:[1.0133,-70.4872]},
+        {name:"Pacoa", coords:[-0.046,-70.602]},
+        {name:"Taraira", coords:[-1.082,-69.757]}
+    ];
+
+    const markers = [];
+    locations.forEach(loc => {
+        const marker = L.marker(loc.coords).addTo(map).bindPopup(`<b>${loc.name}</b>`);
+        markers.push(marker);
+    });
+
+    // Ajustar vista para que todos los marcadores se vean
+    const group = new L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.2));
+</script>
+
+
+<!-- Botón flotante de WhatsApp -->
+<!-- Botón flotante de WhatsApp mejorado -->
+<a href="https://wa.me/573142933385?text=Hola%20quiero%20más%20información"
+    class="whatsapp-float"
+    target="_blank"
+    rel="noopener noreferrer">
+    <i class="fab fa-whatsapp"></i>
+</a>
+</body>
+</html>
